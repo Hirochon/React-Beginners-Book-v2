@@ -18,6 +18,7 @@ class App extends Component {
           {
             // コメントはこう書く
           }
+          {/* eslint-disable-next-line */}
           <img {...logoAttrs} />
           {title && <p>{title}</p>}
           {targets.map(target => (
