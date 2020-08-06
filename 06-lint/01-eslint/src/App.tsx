@@ -4,7 +4,7 @@ import "./App.css";
 
 class App extends Component {
   render() {
-    const logoOptions = {
+    var logoOptions = {
       alt: "logo",
       className: "App-logo",
       src: logo
