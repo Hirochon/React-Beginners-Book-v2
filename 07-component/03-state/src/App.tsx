@@ -13,13 +13,13 @@ class App extends Component<{}, AppState> {
     this.state = { count: 0 };
   }
 
-  increment() {
+  increment = () => {
     this.setState(prevState => ({
       count: prevState.count + 1,
     }));
   }
 
-  decrement() {
+  decrement = () => {
     this.setState(prevState => ({
       count: prevState.count - 1,
     }));
@@ -40,10 +40,10 @@ class App extends Component<{}, AppState> {
           </Statistic>
           <Card.Content>
             <div className="ui two buttons">
-              <Button color="red" onClick={() => this.decrement()}>
+              <Button color="red" onClick={this.decrement}>
                 -1
               </Button>
-              <Button color="green" onClick={() => this.increment()}>
+              <Button color="green" onClick={this.increment}>
                 +1
               </Button>
             </div>
