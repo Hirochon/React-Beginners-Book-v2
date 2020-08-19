@@ -6,7 +6,7 @@ import './App.css';
 interface AppState {
   count: number;
 }
-
+// 引数の１つめはProps,２つめはLocal State型
 class App extends Component<{}, AppState> {
   constructor(props: {}) {
     super(props);

@@ -25,3 +25,33 @@ Component<CharacterListProps>とは…ジェネリクス
 ```
 
     - 上記ではpropsからschoolとcharactersの要素をローカル変数として抽出している。
+
+## コンポーネント内部の状態を規定するLocal State
+```tsx: local.tsx
+class App extends Component<{}, AppState> {
+  constructor(props: {}) {
+    super(props);
+    this.state = { count: 0 };
+  }
+
+  increment = () => {
+    this.setState(prevState => ({
+      count: prevState.count + 1,
+    }));
+  }
+
+  decrement = () => {
+    this.setState(prevState => ({
+      count: prevState.count - 1,
+    }));
+  }
+```
+
+引数に{}とAppStateがあるけど、一つ目はProps,２つめはLocal State型。
+コンストラクタでthis.stateに向けて初期化のオブジェクトを渡している。
+大事なナノは`this.state`に値を設定していること。
+incremant()メソッドとdecrement()メソッドでその値を変化させている。
+→ setState()メソッドを必ず使って値を更新している
+
+**`<Button onClick={this.decrement}>`というButton子コンポーネントへ自身の状態を変更する`decrement`という関数を行動時に発火されるイベントを渡しておく。これで子コンポーネントのイベント時に親が変わる。**
+→ `increment()`はLocalStateのcounterを1加算する関数で、それが子コンポーネントのButtonにPropsとして渡されて、コンポーネント内部でそのフォームボタンにクリックイベントが仕込まれている。
