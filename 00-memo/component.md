@@ -131,3 +131,35 @@ const CharacterList: FC<CharacterListProps> = ({
 ```
 
 上記のように引数として持ってくる。多分これ`this`表記してないから直感的で分かりやすい。
+
+## Presentational ComponentとContainer Component
+クラスコンポーネントと関数コンポーネントとは別の角度からコンポーネントを2種類に分類することができる。それが**Presentational Component**と**Container Component**。普段の会話では『コンポーネント』と『コンテナ』と略して呼ぶことが多い。
+
+### Presentational Component
+**主に見た目を担うコンポーネントのこと**
+
+- 『どのように見えるか』に興味を持つ
+- 内部にDOMマークアップをふんだんに持つ
+- データやふるまいをPropsとして一方的に受け取る
+- FluxのStore等に依存しない
+- 自身の状態を持たない(UIの状態は除く)
+- データの変更に介入しない
+- 関数コンポーネントで表現されることが多い
+
+### Container Component
+**主に処理を担うコンポーネントのこと**
+
+- 『どのように機能するか』に関心を持つ
+- DOMマークアップを可能な限り持たない
+- データやふるまいを他のコンポーネントに受け渡す
+- FluxのActionを実行したり、FluxのStoreに依存する
+- しばしばのデータを持つ
+- しばしばのデータの変更に介入して、任意の処理を行う
+- HOCやRenderProps,Hooksが使われることが多い
+
+### Reactらしくて一番キレイなコンポーネントの作り方について
+1. 関数コンポーネントで見た目だけを整えたPresentational Componentを作る
+2. それをimportしてHooksやHOCで必要な機能を追加して別途Container Componentを作る
+
+**→　最初から状態や機能を盛り込んだContainer Componentを作るのはあまり得策じゃない。**(コンポーネントの再利用性やテスタビリティが高くなるから。Presentational Componentだけを集めてコンポーネントのスタイルガイドを作ったり、Container Componentにする際に追加した機能だけをテストする。みたいなやり方がやりやすい。)
+
