@@ -8,6 +8,7 @@
 - 単方向データフロー
   データは必ず親コンポーネントから子コンポーネントへ一方通行で渡される
 
+
 ## Propsをコンポーネントに受け渡す
 Propsとは…関数に対する引数のようなもの。**マウント時のタグの中では、そのタグの属性値**として表現される。
 コンポーネント自身の定義の中では、それがクラスコンポーネントの場合だと**propsという名前のメンバー変数**。関数コンポーネントの場合は**その関数の引数として表現される**。
@@ -25,6 +26,7 @@ render() {
 ```
 
 - 上記ではpropsからschoolとcharactersの要素をローカル変数として抽出している。
+
 
 ## コンポーネント内部の状態を規定するLocal State
 ```tsx: local.tsx
@@ -55,6 +57,7 @@ incremant()メソッドとdecrement()メソッドでその値を変化させて�
 
 **`<Button onClick={this.decrement}>`というButton子コンポーネントへ自身の状態を変更する`decrement`という関数を行動時に発火されるイベントを渡しておく。これで子コンポーネントのイベント時に親が変わる。**
 → `increment()`はLocalStateのcounterを1加算する関数で、それが子コンポーネントのButtonにPropsとして渡されて、コンポーネント内部でそのフォームボタンにクリックイベントが仕込まれている。
+
 
 ## コンポーネントのライフサイクル
 『コンポーネントのライフサイクル』とは『初期化されて、マウントされ、レンダリングされ、何らかの処理を行われて、再レンダリングされて、最後にアンマウントされるまでの過程』を示す。
@@ -98,3 +101,33 @@ incremant()メソッドとdecrement()メソッドでその値を変化させて�
 - メソッド: 戻り値: 説明
 - `componentDidCatch(error, info)`: void: 子孫コンポーネントで例外が起きた時に呼ばれる
 - `static getDerivedStateForm(error)`: State: 子孫コンポーネントで例外が起きた時に呼ばれ、Stateを更新する。
+
+
+## 関数コンポーネント
+### クラスコンポーネントのデメリット
+- クラス内のthisの挙動が難解
+- 記述が冗長になりがちで、時系列が複雑なライフサイクルメソッドの挙動
+- 今後導入予定の各種最適化がクラスだと難しい
+
+`import React, { FC } from 'react';`で関数コンポーネントで状態が持てるようになったやつ
+
+```tsx: component.tsx
+export interface Character {
+  id: number;
+  name: string;
+  age: number;
+  height?: number;
+}
+
+interface CharacterListProps{
+  school: string;
+  characters: Character[];
+}
+
+const CharacterList: FC<CharacterListProps> = ({
+  school = '校名不明',
+  characters,
+}) = (...)
+```
+
+上記のように引数として持ってくる。多分これ`this`表記してないから直感的で分かりやすい。
