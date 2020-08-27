@@ -2,29 +2,29 @@
 
 ## Reactの基本思想
 - 仮想DOM
-    最終的な差分だけ元のDOMに書き戻すようにして、オーバーヘッドを最小限にする仕組み
+  最終的な差分だけ元のDOMに書き戻すようにして、オーバーヘッドを最小限にする仕組み
 - コンポーネント指向
-    Webアプリケーションを構築するための再利用可能なカプセル化された独自のHTMLタグをWeb標準の技術だけで作成できる技術
+  Webアプリケーションを構築するための再利用可能なカプセル化された独自のHTMLタグをWeb標準の技術だけで作成できる技術
 - 単方向データフロー
-    データは必ず親コンポーネントから子コンポーネントへ一方通行で渡される
+  データは必ず親コンポーネントから子コンポーネントへ一方通行で渡される
 
 ## Propsをコンポーネントに受け渡す
 Propsとは…関数に対する引数のようなもの。**マウント時のタグの中では、そのタグの属性値**として表現される。
 コンポーネント自身の定義の中では、それがクラスコンポーネントの場合だと**propsという名前のメンバー変数**。関数コンポーネントの場合は**その関数の引数として表現される**。
 
-import {Character as Player} from './CharacterList';で名前を変えて定義もできる
+`import {Character as Player} from './CharacterList';`で名前を変えて定義もできる
 
 Component<CharacterListProps>とは…ジェネリクス
 - CharacterListクラスに対する型引数で、渡すことでコンポーネントのPropsの型を指定している。
 - Componentクラスの型引数にはデフォルト値として{}という空オブジェクトが設定されている。
-    → これによって、そのコンポーネントをタグとしてマウントする時に、schoolとcharacter属性値をそれぞれの適正な型で記述しないとVSCodeに怒られるw
+  → これによって、そのコンポーネントをタグとしてマウントする時に、schoolとcharacter属性値をそれぞれの適正な型で記述しないとVSCodeに怒られるw
 
 ```tsx: CL.tsx
-    render() {
-    const { school, characters } = this.props;
+render() {
+  const { school, characters } = this.props;
 ```
 
-    - 上記ではpropsからschoolとcharactersの要素をローカル変数として抽出している。
+- 上記ではpropsからschoolとcharactersの要素をローカル変数として抽出している。
 
 ## コンポーネント内部の状態を規定するLocal State
 ```tsx: local.tsx
@@ -67,12 +67,34 @@ incremant()メソッドとdecrement()メソッドでその値を変化させて�
 
 ### コンポーネントが再レンダリングされるのは基本的に２つの場合のみ
 1. コンポーネントに渡されているPropsに変更があった時
-2. 自身のLocal Stateの値にへんこうがあった時
+2. 自身のLocal Stateの値に変更があった時
 ※ 任意の条件で再レンダリングを阻止する方法もある。
 
 先ほどのカウントアプリではボタンを押したタイミングでLocal Stateに規定されたcountの値が変更されたから、コンポーネントが再レンダリングされた。
 
+### ライフサイクルメソッドについて
 そんでライフサイクルの各フェーズに介入して、任意の処理を差し込むことができるメソッドがReactには用意されている。それがライフサイクルメソッドという。
 
-### ライフサイクルメソッドについて
+#### 1. Mountingフェーズ
+- メソッド: 戻り値: 説明
+- `constructor(props)`: void: コンストラクタ。
+- `static getDerivedStateFromProps(props, state)`: State | null: レンダリングの直前に呼ばれ、戻り値でLocal Stateを変更することができる。
+- `render()`: React.ReactNode: レンダリングを行う
+- **`componentDidMount()`: void: コンポーネントがマウントされた直後に呼ばれる**
 
+#### 2. Updatingフェーズ
+- メソッド: 戻り値: 説明
+- `static getDerivedStateFromProps(props, state)`: State | null: レンダリングの直前に呼ばれ、戻り値でLocal Stateを変更することができる
+- **`shouldComponentUpdate(nextProps, nextState)`: boolean: 再レンダリングの直前に呼ばれ、falseを返せば再レンダリングを中止できる**
+- `render()`: React.ReactNode: レンダリングを行う
+- `getSnapshotBeforeUpdate(prevProps, preStat)`: Snapshot | null: コンポーネントが変更される直前に呼ばれ、戻り値でスナップショットを取っておける
+- **`componentDidUpdate(prevProps,prevState,snapshot?)`: void: コンポーネントが変更された直後に呼ばれる**
+
+#### 3. Unmountingフェーズ
+- メソッド: 戻り値: 説明
+- **`componentWillUnmount()`: void: コンポーネントがアンマウントされる直前に呼ばれる**
+
+#### 4. Error Handlingフェーズ
+- メソッド: 戻り値: 説明
+- `componentDidCatch(error, info)`: void: 子孫コンポーネントで例外が起きた時に呼ばれる
+- `static getDerivedStateForm(error)`: State: 子孫コンポーネントで例外が起きた時に呼ばれ、Stateを更新する。
