@@ -66,3 +66,9 @@ useEffect(() => {
 
 ## Custom Hookで独自のHookを作る
 Custom Hookを使って、『見た目だけを整えた**Presentational Component**』を作り、それをimportしてきて、Custom Hookで『必要な機能を追加して**Container Component**』にすることが簡単にできる。
+
+## その他のHooks
+### Hooksを使う際の注意点をおさらい
+- Hooksを呼べるのは関数コンポーネントかCustom Hookの中のみ。クラスコンポーネントやReactモジュールの管轄外での使用は不可。
+- Hooks文を記述するのはその関数のトップレベルで行う。条件分岐やループ、ネストした関数内に記述するのは不可。
+- Custom Hookの関数名は、useXxxのように必ず『use』で始める。
