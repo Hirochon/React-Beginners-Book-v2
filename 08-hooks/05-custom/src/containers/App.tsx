@@ -17,8 +17,8 @@ const useTimer = (limitSec: number): [number, () => void] => {
     };
     const timerId = setInterval(tick, 1000);
 
-    return () => clearInterval(timerId);  // コンポーネントのアンマウント時にcrearIntervalを実行。時間経過を止める??
-  }, [limitSec]); // 再レンダリング時にlimitSecが変更されていれば、①に戻る。
+    return () => clearInterval(timerId);
+  }, [limitSec]); // limitSecが変更されていれば、①が動き出す
 
   return [timeLeft, reset];
 };

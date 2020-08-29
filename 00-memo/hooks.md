@@ -64,3 +64,5 @@ useEffect(() => {
 もし空の配列を渡すと、`dosomething()`は初回のレンダリングしか行わない。
 
 
+## Custom Hookで独自のHookを作る
+Custom Hookを使って、『見た目だけを整えた**Presentational Component**』を作り、それをimportしてきて、Custom Hookで『必要な機能を追加して**Container Component**』にすることが簡単にできる。
