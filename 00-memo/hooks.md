@@ -41,3 +41,26 @@ setCount(prevCount => prevCount + 1);
 `this.setState({count: 0})`や`this.setState(prevCount => ({count: prevCount + 1}))`のようにオブジェクトを扱う必要があったけど、StateHookの場合はその必要がない。
 
 
+## Effect Hookでライフサイクルを扱う
+クラスコンポーネントのライフサイクルメソッド`componentDidMount()`,`componentDidUpdate()`,`componentWillUnmount()`に相当する機能を実現したもの。主に副作用(データの取得、手動でのDOMの改変、ログの記録)を扱うHooks。使い方は下記。
+
+```tsx: effecthook.tsx
+useEffect(() => {
+    doSomething();
+
+    return clearSomething()
+}, [watchVar]);
+```
+
+`useEffect()`は第1引数に引数なしの関数を設定する。その渡した関数の中身、ここでは`dosomething()`がコンポーネントのレンダリング直前に実行されることになる。(≒`componentDidMount()`や`componentDidUpdate()`といったメソッド内に書くのと同じ)
+関数は必ずしも戻り値を必要としないが、戻り値を設定すると、コンポーネントのアンマウント直前に実行されることになる。(≒`componentWillUnmount()`と同じ)
+
+`useEffect()`の第２引数では配列を指定する必要がある(省略可)。その配列の中に任意の変数を入れておくと、その値が前回のレンダリング時と変わらなければ、第１引数で渡された関数の中身の副作用実行がキャンセルされることになる。
+
+→　`useEffect()文`が記述されたコンポーネントでは、初回のレンダリング直後に`dosomething()`が実行され、再レンダリング時には`watchVar`という変数の中身が変わっている時、`dosomething()`が実行されるけど、`watchVar`が変わってなければ`dosomething()`は実行されない。
+そしてアンマウント時には`clearSomething()`が実行される。
+
+もし第２引数を省略すると、問答無用でレンダリングの際に`dosomething()`を実行する。
+もし空の配列を渡すと、`dosomething()`は初回のレンダリングしか行わない。
+
+
